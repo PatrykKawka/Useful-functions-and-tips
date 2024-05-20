@@ -1,0 +1,44 @@
+marr["age"] - wybieranie kolumny
+df[['kolumna1', 'kolumna2']].head() - wybieranie kilku kolumn
+df.rename(columns = {'nazwastara': 'nazwa nowa'}).head() - zmiana nazw kolumn
+df.columns.tolist() - lista z nazw kolumn
+df.select_dtypes('number').head() - wszystkie kolumny określonego typu
+df_bez_kolumny = df.drop(kolumna_do_ignorowania, axis=1) - usuwanie kolumny
+df.shape() - kształt tabeli
+df.info() - informacje o kolumnach i typach danych
+df["Grupa pracownicza"].value_counts() - zliczanie wartości w kolumnie
+
+
+Indeksowanie:
+iloc - po numerach wierszy
+loc - po warunkach logicznych
+df.iloc[3:5, 2:4] # odwołanie do wierszy i kolumn
+marr.iloc[:,3:5].head() # odwołanie tylko do kolumn
+marr.loc[(marr.favColor == 'red') | (marr.favColor == 'orange')].head(5)
+marr.loc[marr.favColor.isin(['red', 'orange'])].head(5)
+# Zaprzeczenie powyższemu otrzymujemy przez dodanie tyldy na początku:
+marr.loc[~marr.favColor.isin(['red', 'orange'])].head(5)
+# Pamiętajmy jednak, że nie możemy uzyć słowa "and" zamiast znaku "&"
+marr.loc[(marr.favColor == "red") & (marr.age <= 25)].head(5)
+# W Pythonie są metody wspomagające filtrowanie, jak chociażby wygodne between:
+marr.loc[marr.age.between(20, 30)].head(5)
+
+Filtrowanie tabeli - query jest lepszą nakładką na loc
+marr.query('favColor == "violet" & age > 30').head(5)
+# Możemy łączyć różne kryteria łącznie z porównywaniem kolumn
+marr.query('favColor == "blue" and years < educ').head(5)
+
+
+
+df.select_dtypes(include=['float64', 'int64']) - wybieramy tylko ramkę danych z kolumnami w formacie numerycznym
+
+
+Grupowanie i agregowanie:
+# mapowanie za pomocą Pandas.Series
+data.groupby(data['Stanowisko']).size() 
+data.groupby(['Stanowisko']).agg({'Przychód':[np.mean, meanCut, 'median']}) - grupowanie po jednej zmiennej
+aggs = data.groupby(['Stanowisko', "Obszar Kadrowy"]).agg({'Przychód':['mean', 'sum', 'median'], 'Wiek': ['mean', 'count', 'nunique']}) - grupowanie po wielu zmiennych
+
+Tabele przestawne:
+pd.pivot_table(data, index = ['Stanowisko'], columns = ['Płeć'],
+               values = ["Przychód", "Wiek"], aggfunc = "median").fillna('--').round(2)

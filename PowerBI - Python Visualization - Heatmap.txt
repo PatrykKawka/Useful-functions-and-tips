@@ -1,0 +1,17 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# dataset = pandas.DataFrame(Games, Minutes, Goals, Assists)
+dataset = dataset.drop_duplicates()
+
+corr_matrix=dataset.corr()
+
+plt.figure(figsize=(15, 10)) #rozmiar wykresu
+sns.heatmap(corr_matrix, annot = True,fmt=".2f", annot_kws={"size": 20}, cmap = 'Greens', linewidths=0.5, linecolor='black')
+
+# https://matplotlib.org/stable/users/explain/colors/colormaps.html
+
+plt.title('Korelacja między...', fontsize = 40)
+plt.xlabel('nazwaX', fontsize = 30)
+plt.ylabel('nazwaY', fontsize = 30)
+plt.show()

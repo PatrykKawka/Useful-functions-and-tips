@@ -1,0 +1,18 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# dataset = pandas.DataFrame(Category, Value)
+
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='Category', y='Value', data=dataset, boxprops=dict(facecolor='lightblue', linewidth=2), linewidth=2)
+
+plt.axhline(dataset['Value'].mean(), color='red', linestyle='--', linewidth=2, label='Mean') #linia średniej
+plt.axhline(dataset['Value'].min(), color='blue', linestyle=':', linewidth=2, label='Min') #linia min
+plt.axhline(dataset['Value'].max(), color='green', linestyle=':', linewidth=2, label='Max') # linia max
+
+plt.title('Boxplot of Values by Category')
+plt.grid(axis='y', linestyle='--', alpha=1)
+plt.xlabel('Category')
+plt.ylabel('Value')
+plt.show()

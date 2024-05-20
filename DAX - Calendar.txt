@@ -1,0 +1,32 @@
+dim_Calendar = 
+VAR Kalendarz = (
+    VAR   min_date = MIN(table[ColumnName])
+    VAR   max_date = MAX(table[ColumnName])
+RETURN
+    CALENDAR(min_date, max_date)
+)
+RETURN
+GENERATE(
+    Kalendarz, 
+    VAR Daty = [Date]
+    VAR Rok = YEAR(Daty)
+    VAR Miesiac = MONTH(Daty)
+    VAR NazwaMiesiaca = FORMAT(Daty, "mmmm")
+    VAR Dzien = DAY(Daty)
+    VAR Dzientygodnia = FORMAT(Daty, "dddd")
+    VAR NUmerdniatygodnia = WEEKDAY(Daty, 2)
+    VAR Kwartal = FORMAT(Daty, "\QQ")
+    VAR ISONumTyg = WEEKNUM(Daty, 21)
+    VAR RokKwartal = FORMAT(Daty, "yyyy-\Qq")
+    RETURN ROW(
+        "Rok", Rok,
+        "Miesiąc", Miesiac,
+        "Nazwa miesiąca", NazwaMiesiaca,
+        "Dzień", Dzien,
+        "Dzień tygodnia", Dzientygodnia,
+        "Numer dnia tygodnia", NUmerdniatygodnia,
+        "Kwartał", Kwartal,
+        "Rok-kwartał", RokKwartal,
+        "Numer Tygodnia", ISONumTyg
+    )
+    )

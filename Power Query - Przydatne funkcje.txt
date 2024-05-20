@@ -1,0 +1,8 @@
+1. Wpisywanie wartości do kolumny jeśli pierwszy znak w kolumnie to X - coś jak LEFT, jest jeszcze Text.End
+if Text.Start([Kolumna],1) = "X" then "Słowo" 
+else if Text.Start([Kolumna],1) = "Z" then "cos"
+else "inne"
+
+2. Text.Length([Kolumna]) - sprawdza długość tekstu
+
+3. List.Median

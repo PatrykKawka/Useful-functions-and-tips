@@ -1,0 +1,15 @@
+1. Najpierw wyciągamy kolumnę z godziną:
+Time = TIMEVALUE(FORMAT([OrderDateTime], "hh:mm:ss"))
+2. 
+tbl_Time = 
+SELECTCOLUMNS(
+    GENERATESERIES(1/86400, 1, TIME(0, 0, 1))
+    , "Time", [Value]
+    , "Hour", HOUR ( [Value] )
+    , "Minute", MINUTE ( [Value] )
+    , "5 Min Band",  TIME(HOUR([Value]), FLOOR(MINUTE([Value])/5, 1) * 5, 0) + TIME(0, 5, 0)
+    , "15 Min Band", TIME(HOUR([Value]), FLOOR(MINUTE([Value])/15, 1) * 15, 0) + TIME(0, 15, 0)
+    , "30 Min Band", TIME(HOUR([Value]), FLOOR(MINUTE([Value])/30, 1) * 30, 0) + TIME(0, 30, 0)
+    , "45 Min Band", TIME(HOUR([Value]), FLOOR(MINUTE([Value])/45, 1) * 45, 0) + TIME(0, 45, 0)
+    , "60 Min Band", TIME(HOUR([Value]), FLOOR(MINUTE([Value])/60, 1) * 60, 0) + TIME(0, 60, 0)
+ )

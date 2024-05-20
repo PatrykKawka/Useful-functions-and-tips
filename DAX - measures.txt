@@ -1,0 +1,10 @@
+1. Stosunek przychodu rok do roku:
+Sales YoY% = 
+VAR salesPreviousYear = CALCULATE([TotalAmount], DATEADD(dim_Calendar[Date], -1, YEAR))
+VAR salesActualYear = [TotalAmount]
+VAR Result = DIVIDE(salesActualYear - salesPreviousYear, salesPreviousYear)
+
+RETURN
+Result
+
+2. 

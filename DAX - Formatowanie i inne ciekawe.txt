@@ -1,0 +1,58 @@
+1. Formatowanie wykresu słukowego z informacją na temat aktualnego wyniku i po kresce sprzedaży rok do roku.
+
+Labels = FORMAT([TotalAmount], "#,##0,.0") & " | " & Format([Sales YoY%], "0.0%")
+Labels = FORMAT([TotalAmount], "#,##0,.0") & " | " & FORMAT([SalesForecast], "#,##0,.0") & Format([Sales YoY%], "0.0%")
+Labels = FORMAT([TotalAmount], "#,##0,.k") & " | " & Format([Sales YoY%], "0.0%") - z k zamiast liczby po przecinku
+
+2. Dynamiczny format miary - ze strzałkami w góre i dół
+VAR _Increase =  UNICHAR(9652)
+VAR _Decrease = UNICHAR(9662)
+VAR _Trend = 
+    IF([%MoM]>100, _Increase, _Decrease)
+
+VAR _Format = _Trend & "0%"
+RETURN _Format & ";" & _Format
+
+3. Formatowanie wartość miary na czerwono, gdy przekroczy pewien określony limit. 
+W tym przypadku możemy użyć warunkowego formatowania kolorów.
+DynamiczneFormatowanieKoloru = 
+VAR Limit = 1000
+VAR Wartosc = [TwojaMiera]
+RETURN
+    IF(Wartosc > Limit, 
+       "<span style='color:red'>" & FORMAT(Wartosc, "#,##0.00") & "</span>", 
+       FORMAT(Wartosc, "#,##0.00"))
+
+4.  formatowanie liczby w zależności od jej wartości. Na przykład, chcemy pokazywać liczby większe niż 
+1000 z dwiema cyframi po przecinku, a mniejsze liczby bez cyfr po przecinku.
+DynamiczneFormatowanie = 
+VAR Wartosc = [TwojaMiera]
+RETURN
+    IF(Wartosc > 1000, FORMAT(Wartosc, "#,##0.00"), FORMAT(Wartosc, "#,##0"))
+
+5. Formatowanie koloru miary w zaleznosci od wartosci:
+DynamiczneFormatowanieKoloru = 
+VAR Wartosc = [TwojaMiera]
+RETURN
+    IF(
+        Wartosc > 100,
+        "<span style='color:green'>" & FORMAT(Wartosc, "#,##0.00") & "</span>",
+        IF(
+            Wartosc >= 80 && Wartosc <= 99,
+            "<span style='color:yellow'>" & FORMAT(Wartosc, "#,##0.00") & "</span>",
+            "<span style='color:red'>" & FORMAT(Wartosc, "#,##0.00") & "</span>"
+        )
+    )
+
+6. Jeżeli liczba jest wieksza niz 1000 to spacja pomiedzy liczba tysiecy
+DynamiczneFormatowanie = 
+VAR Wartosc = [TwojaMiera]
+RETURN
+    IF(
+        Wartosc > 1000,
+        FORMAT(Wartosc, "#,##0"),  // Formatowanie z separatorem tysięcy
+        FORMAT(Wartosc, "0")        // Domyślne formatowanie dla wartości poniżej lub równych tysiąc
+    )
+
+7. 
+
