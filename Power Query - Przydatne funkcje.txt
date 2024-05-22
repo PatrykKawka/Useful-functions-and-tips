@@ -6,3 +6,8 @@ else "inne"
 2. Text.Length([Kolumna]) - sprawdza długość tekstu
 
 3. List.Median
+
+4. Filtrowanie wierszy z pominięciem wielkości liter
+= Table.SelectRows(#poprzednikrok, each Text.Contains([kolumna], "warunek", Comparer.OrdinalIgnoreCase))
+
+
