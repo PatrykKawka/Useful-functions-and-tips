@@ -1,0 +1,34 @@
+-- Najpierw należy utworzyć tabelę docelową
+CREATE TABLE dbo.YourTable (
+    Column1 VARCHAR(50),
+    Column2 INT,
+    Column3 DATETIME
+);
+
+-- Następnie można użyć BULK INSERT do zaimportowania danych z pliku CSV
+BULK INSERT dbo.YourTable
+FROM 'C:\Path\To\Your\File.csv'
+WITH (
+    FIELDTERMINATOR = ',', -- separator pól
+    ROWTERMINATOR = '\n', -- separator wierszy
+    FIRSTROW = 2 -- jeśli plik CSV zawiera nagłówki, pomijamy pierwszy wiersz
+);
+
+
+lub
+
+
+-- Najpierw należy włączyć funkcję Ad Hoc Distributed Queries, jeśli jest wyłączona
+EXEC sp_configure 'show advanced options', 1;
+RECONFIGURE;
+EXEC sp_configure 'Ad Hoc Distributed Queries', 1;
+RECONFIGURE;
+
+-- Użycie OPENROWSET do zaimportowania danych z pliku CSV
+SELECT *
+INTO dbo.YourTable
+FROM OPENROWSET(
+    BULK 'C:\Path\To\Your\File.csv',
+    FORMATFILE = 'C:\Path\To\Your\FormatFile.xml'
+) AS CSVData;
+
