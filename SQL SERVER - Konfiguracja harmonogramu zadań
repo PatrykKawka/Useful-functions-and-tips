@@ -1,0 +1,20 @@
+Utworzenie nowego zadania:
+
+Otwórz SQL Server Management Studio.
+W Object Explorer, rozwiń węzeł SQL Server Agent.
+Kliknij prawym przyciskiem myszy na Jobs i wybierz New Job.
+Konfiguracja zadania:
+
+W zakładce General podaj nazwę zadania.
+Przejdź do zakładki Steps i kliknij New. Wypełnij formularz:
+Step name: Run CheckFreeAgentAlert.
+Type: Transact-SQL script (T-SQL).
+Command: EXEC CheckFreeAgentAlert;.
+Kliknij OK.
+Konfiguracja harmonogramu:
+
+Przejdź do zakładki Schedules i kliknij New. Skonfiguruj harmonogram, np. codzienne uruchamianie o określonej godzinie.
+Kliknij OK.
+Zapisanie i aktywacja zadania:
+
+Kliknij OK, aby zapisać zadanie.
