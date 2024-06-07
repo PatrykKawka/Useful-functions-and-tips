@@ -1,0 +1,7 @@
+BULK INSERT Tabela
+FROM 'ścieżka'
+WITH(
+  FIRSTROW = 2, // bo nagłowek i zaczynamy od 2 wiersza tabelę
+  FIELDTERMINATOR = ',', // separator
+  ROWTERMMINATOR = '/n', // każdy nowy wiersz w nowej linii
+);
