@@ -1,0 +1,24 @@
+Funkcja LOOKUPVALUE w DAX jest używana do wyszukiwania wartości w tabeli na podstawie jednego lub więcej warunków. Jest szczególnie przydatna, gdy nie ma relacji między tabelami, ale musisz pobrać wartości z innej tabeli na podstawie wspólnych kolumn.
+LOOKUPVALUE(
+    <nazwa_kolumny_do_zwrotu>,
+    <nazwa_kolumny_do_wyszukiwania1>, <wartość_do_wyszukiwania1>,
+    [<nazwa_kolumny_do_wyszukiwania2>, <wartość_do_wyszukiwania2>], ...
+)
+ProductName = LOOKUPVALUE(
+    Products[ProductName], 
+    Products[ProductID], 
+    Sales[ProductID]
+)
+Category = LOOKUPVALUE(
+    Products[Category], 
+    Products[ProductID], 
+    Sales[ProductID]
+)
+Total Sales for Category = 
+CALCULATE(
+    SUM(Sales[SalesAmount]),
+    FILTER(
+        Sales, 
+        LOOKUPVALUE(Products[Category], Products[ProductID], Sales[ProductID]) = "Electronics"
+    )
+)
