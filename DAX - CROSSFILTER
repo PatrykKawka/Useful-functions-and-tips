@@ -1,0 +1,4 @@
+Określa kierunek filtrowania krzyżowego, który ma być używany w obliczeniach dla relacji, która istnieje między dwiema kolumnami. - lepsze niż 
+ustawienie dwukierunkowego filtrowania w modelu
+
+CROSSFILTER(<columnName1>(wiele), <columnName2>(1), <direction> - BOTH)
