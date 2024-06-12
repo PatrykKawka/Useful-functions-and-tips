@@ -1,0 +1,33 @@
+Funkcja SUMMARIZECOLUMNS jest nowszą i bardziej zaawansowaną wersją funkcji SUMMARIZE. Pozwala ona nie tylko na grupowanie danych, ale także na dodawanie filtrów i obsługę relacji pomiędzy tabelami bez konieczności używania funkcji FILTER. Jest bardziej elastyczna i wydajna niż SUMMARIZE.
+SUMMARIZECOLUMNS(
+    <kolumnaGrupowania1>,
+    <kolumnaGrupowania2>, 
+    ...,
+    [<nazwaNowejKolumny> = <wyrażenieAgregujące>],
+    <filter1>,
+    <filter2>,
+    ...
+)
+SUMMARIZECOLUMNS(
+    Sales[ProductID],
+    Sales[Region],
+    "Total Sales", SUM(Sales[SalesAmount]),
+    Sales[Year] = 2023
+)
+
+SUMMARIZECOLUMNS: Obsługuje filtry bezpośrednio w swojej składni, co czyni ją bardziej elastyczną i wygodną do stosowania.
+SUMMARIZECOLUMNS: Automatycznie obsługuje relacje między tabelami, co upraszcza zapytania.
+SUMMARIZECOLUMNS: Jest zazwyczaj bardziej wydajna, zwłaszcza w złożonych scenariuszach, ponieważ jest zoptymalizowana do pracy z dużymi zbiorami danych.
+SUMMARIZECOLUMNS: Umożliwia bardziej zaawansowane operacje grupowania i agregowania dzięki wsparciu dla filtrowania i automatycznej obsługi relacji.
+
+
+GDY POMIĘDZY TABELAMI NIE MA RELACJI:
+SUMMARIZECOLUMNS(
+    Products[ProductName],
+    Products[Category],
+    "Total Sales", 
+    CALCULATE(
+        SUM(Sales[SalesAmount]),
+        Sales[ProductID] = Products[ProductID]
+    )
+)
