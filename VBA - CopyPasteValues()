@@ -1,0 +1,13 @@
+Sub CopyPasteValues()
+    Dim rng As Range
+
+    Set rng = Selection.CurrentRegion
+    
+    rng.Copy
+    rng.PasteSpecial Paste:=xlPasteValues
+    Application.CutCopyMode = False
+
+    rng.Cells(1, 1).Select
+
+    MsgBox "Kopiowanie i wklejanie jako wartości zakończone.", vbInformation
+End Sub
