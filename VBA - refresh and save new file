@@ -1,0 +1,59 @@
+Sub UpdateAndSaveWorkbook()
+    Dim filePath As String
+    Dim newFilePath As String
+    Dim workbook As Workbook
+    Dim ws As Worksheet
+    Dim nowDate As Date
+    Dim dateStr As String
+
+    ' Ścieżka do istniejącego pliku Excel
+    filePath = "..."
+
+    ' Otwarcie Excela i ustawienie widoczności
+    Application.Visible = True
+
+    On Error GoTo ErrorHandler
+
+    ' Otwarcie pliku Excel
+    Set workbook = Workbooks.Open(filePath)
+
+    ' Odświeżenie wszystkich danych w workbook
+    workbook.RefreshAll
+
+    ' Czekanie na zakończenie wszystkich asynchronicznych zapytań
+    DoEvents
+    Application.CalculateUntilAsyncQueriesDone
+
+    ' Pobranie aktualnej daty i utworzenie nowej nazwy pliku
+    nowDate = Now
+    dateStr = Format(nowDate, "yyyy-mm-dd")
+    newFilePath = "..." & dateStr & ".xlsx"
+
+    ' Wyłączenie alertów, aby uniknąć wyskakujących okienek podczas zapisywania
+    Application.DisplayAlerts = False
+
+    ' Zapisanie workbook pod nową nazwą
+    workbook.SaveAs Filename:=newFilePath
+
+    ' Ponowne włączenie alertów
+    Application.DisplayAlerts = True
+
+    ' Informacja o zapisaniu pliku
+    MsgBox "Plik zapisany jako: " & newFilePath
+
+    ' Zamknięcie workbook bez zapisywania zmian
+    workbook.Close SaveChanges:=False
+
+    ' Zamknięcie Excela
+    Application.Quit
+
+    Exit Sub
+
+ErrorHandler:
+    ' Obsługa błędów
+    MsgBox "Wystąpił błąd: " & Err.Description
+    If Not workbook Is Nothing Then
+        workbook.Close SaveChanges:=False
+    End If
+    Application.Quit
+End Sub
