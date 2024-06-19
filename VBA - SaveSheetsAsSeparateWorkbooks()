@@ -1,0 +1,33 @@
+Sub SaveSheetsAsSeparateWorkbooks()
+    Dim ws As Worksheet
+    Dim wb As Workbook
+    Dim newWb As Workbook
+    Dim folderPath As String
+    Dim fileName As String
+
+    folderPath = "C:\Users\pkawk\OneDrive\Pulpit\Excel\"
+    
+    Set wb = ThisWorkbook
+    
+    For Each ws In wb.Worksheets
+        
+        Set newWb = Workbooks.Add
+        ws.Copy Before:=newWb.Sheets(1)
+        Application.DisplayAlerts = False
+        For Each sheet In newWb.Sheets
+            If sheet.Name <> ws.Name Then
+                sheet.Delete
+            End If
+        Next sheet
+        Application.DisplayAlerts = True
+        ' Ustal nazwę pliku (nazwa arkusza)
+        fileName = folderPath & ws.Name & ".xlsx"
+        ' Zapisz nowy skoroszyt
+        newWb.SaveAs fileName
+        ' Zamknij nowy skoroszyt bez zapisywania
+        newWb.Close SaveChanges:=False
+    Next ws
+    
+    ' Informacja o zakończeniu operacji
+    MsgBox "Wszystkie arkusze zostały zapisane jako oddzielne pliki.", vbInformation
+End Sub
