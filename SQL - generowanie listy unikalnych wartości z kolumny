@@ -1,0 +1,18 @@
+DECLARE @cols AS NVARCHAR(MAX);
+
+SET @cols = STUFF((SELECT DISTINCT ',' + QUOTENAME(NAZWA_KOLUMNY)
+                   FROM NAZWA_TABELI
+                   FOR XML PATH(''), TYPE
+                   ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');
+
+Można wykorzystać w Pivotowaniu
+'SELECT kolumna1, ' + @cols + '
+             FROM 
+             (
+                 SELECT kolumna1, kolumna2, kolumna3
+                 FROM SalesData
+             ) AS Tabela
+             PIVOT 
+             (
+                 SUM(Sales) FOR kolumna2 IN (' + @cols + ')
+             ) AS PivotTable';
