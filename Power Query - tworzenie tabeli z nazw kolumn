@@ -1,0 +1,11 @@
+let
+    // Załaduj dane z istniejącej tabeli
+    Source = YourTableName,
+    
+    // Pobierz nazwę kolumny
+    ColumnNames = Table.ColumnNames(Source),
+    
+    // Przekształć listę nazw kolumn w tabelę
+    ColumnNamesTable = Table.FromList(ColumnNames, Splitter.SplitByNothing(), {"ColumnName"})
+in
+    ColumnNamesTable
