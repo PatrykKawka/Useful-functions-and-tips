@@ -14,5 +14,5 @@ Można wykorzystać w Pivotowaniu
              ) AS Tabela
              PIVOT 
              (
-                 SUM(Sales) FOR kolumna2 IN (' + @cols + ')
+                 SUM(kolumna3) FOR kolumna2 IN (' + @cols + ')
              ) AS PivotTable';
