@@ -1,0 +1,18 @@
+Sub WypełnijIPrzeklejWartości()
+    Dim obszar As Range
+    Dim kom As Range
+
+    Set obszar = Selection.CurrentRegion
+   
+    For Each kom In obszar
+        If IsEmpty(kom.Value) Then
+            kom.Value = kom.Offset(-1, 0).Value
+        End If
+    Next kom
+    
+    obszar.Copy
+    obszar.PasteSpecial Paste:=xlPasteValues
+    Application.CutCopyMode = False
+    
+    obszar.Cells(1, 1).Select
+End Sub
