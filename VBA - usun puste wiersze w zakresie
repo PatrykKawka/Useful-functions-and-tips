@@ -1,0 +1,20 @@
+Sub UsunPusteWierszeWAktywnymZakresie()
+    Dim rng As Range
+    Dim wiersz As Long
+    Dim lastRow As Long
+
+    ' Ustawienie aktywnego zakresu
+    Set rng = Selection
+
+    ' Określenie ostatniego wiersza w aktywnym zakresie
+    lastRow = rng.Rows.Count
+
+    ' Iteracja przez wiersze w dół
+    For wiersz = lastRow To 1 Step -1
+        If Application.WorksheetFunction.CountA(rng.Rows(wiersz)) = 0 Then
+            rng.Rows(wiersz).EntireRow.Delete
+        End If
+    Next wiersz
+
+    MsgBox "Puste wiersze zostały usunięte.", vbInformation
+End Sub
