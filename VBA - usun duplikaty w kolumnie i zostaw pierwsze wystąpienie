@@ -1,0 +1,32 @@
+Sub UsunDuplikatyWKolumnie()
+    Dim ws As Worksheet
+    Dim rng As Range
+    Dim liczbaDuplikatow As Long
+    Dim liczbaWierszyPrzed As Long
+    Dim liczbaWierszyPo As Long
+    Dim aktywnaKolumna As Range
+
+    ' Ustawienie aktywnego arkusza
+    Set ws = ActiveSheet
+
+    ' Ustalamy aktywną kolumnę
+    Set aktywnaKolumna = ws.Columns(ActiveCell.Column)
+
+    ' Ustalamy zakres w aktywnej kolumnie (do ostatniej używanej komórki)
+    Set rng = ws.Range(aktywnaKolumna.Cells(1, 1), aktywnaKolumna.Cells(ws.Rows.Count, 1).End(xlUp))
+
+    ' Liczba unikalnych wartości przed usunięciem duplikatów
+    liczbaWierszyPrzed = Application.WorksheetFunction.CountA(rng)
+
+    ' Usunięcie duplikatów
+    rng.RemoveDuplicates Columns:=1, Header:=xlNo
+
+    ' Liczba unikalnych wartości po usunięciu duplikatów
+    liczbaWierszyPo = Application.WorksheetFunction.CountA(rng)
+
+    ' Obliczanie liczby usuniętych duplikatów
+    liczbaDuplikatow = liczbaWierszyPrzed - liczbaWierszyPo
+
+    ' Wyświetlenie komunikatu
+    MsgBox "Usunięto " & liczbaDuplikatow & " duplikatów w aktywnej kolumnie.", vbInformation
+End Sub
