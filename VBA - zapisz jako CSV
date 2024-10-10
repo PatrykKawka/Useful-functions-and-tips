@@ -1,0 +1,14 @@
+Sub ZapiszJakoCSV()
+    Dim sciezka As String
+    Dim plik As String
+
+    ' Ustawienie ścieżki do folderu i nazwy pliku
+    sciezka = "C:\Users\Patryk.kawka\Desktop\Files\"
+    plik = sciezka & ActiveSheet.Name & ".csv"
+
+    ' Zapisz aktywny arkusz jako plik CSV
+    ActiveSheet.SaveAs Filename:=plik, FileFormat:=xlCSV
+
+    ' Informacja o zakończeniu operacji
+    MsgBox "Arkusz został zapisany jako plik CSV w lokalizacji: " & plik, vbInformation
+End Sub
