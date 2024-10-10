@@ -1,0 +1,21 @@
+Sub CreateCalendar()
+    Dim startDate As Date
+    Dim endDate As Date
+    Dim currentDate As Date
+    Dim row As Integer
+    
+    ' Pobierz datę początkową i końcową
+    startDate = InputBox("Wprowadź datę początkową (DD/MM/YYYY):")
+    endDate = InputBox("Wprowadź datę końcową (DD/MM/YYYY):")
+    
+    ' Ustal bieżący wiersz na podstawie aktywnej komórki
+    row = ActiveCell.row
+    currentDate = startDate
+    
+    ' Wypełnij komórki datami
+    Do While currentDate <= endDate
+        Cells(row, ActiveCell.Column).Value = currentDate
+        currentDate = currentDate + 1
+        row = row + 1
+    Loop
+End Sub
