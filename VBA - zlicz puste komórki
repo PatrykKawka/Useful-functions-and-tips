@@ -1,0 +1,20 @@
+Sub ZliczPusteKomorki()
+    Dim rng As Range
+    Dim cell As Range
+    Dim liczbaPustych As Long
+
+    ' Ustalamy aktywny zakres
+    Set rng = Selection.CurrentRegion
+    liczbaPustych = 0
+
+    ' Przechodzimy przez każdą komórkę w zakresie
+    For Each cell In rng
+        If IsEmpty(cell.Value) Then
+            cell.Interior.Color = RGB(255, 0, 0) ' Zaznaczamy na czerwono
+            liczbaPustych = liczbaPustych + 1 ' Zliczamy puste komórki
+        End If
+    Next cell
+
+    ' Wyświetlamy komunikat z ilością pustych komórek
+    MsgBox "Liczba pustych komórek: " & liczbaPustych, vbInformation
+End Sub
