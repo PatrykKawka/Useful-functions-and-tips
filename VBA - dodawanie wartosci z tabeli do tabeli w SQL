@@ -23,7 +23,7 @@ Sub ExportToTextFileToSQLTable()
         ' Usuń ostatni przecinek i dodaj nawias klamrowy
         If Len(textLine) > 0 Then
             textLine = Mid(textLine, 1, Len(textLine) - 1) ' Usuń ostatni przecinek
-            output = output & "{" & textLine & "},"
+            output = output & "(" & textLine & "),"
         End If
     Next i
     
