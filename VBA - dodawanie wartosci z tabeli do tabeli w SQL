@@ -1,0 +1,43 @@
+Sub ExportToTextFileToSQLTable()
+    Dim ws As Worksheet
+    Dim rng As Range
+    Dim cell As Range
+    Dim textLine As String
+    Dim output As String
+    Dim filePath As String
+    Dim i As Long
+    
+    ' Ustaw aktywny arkusz
+    Set ws = ActiveSheet
+    Set rng = ws.UsedRange ' Użyj całego obszaru danych
+    
+    ' Ustaw ścieżkę do zapisu pliku
+    filePath = "C:\Users\Patryk.kawka\Desktop\Files\output.txt" ' Ścieżka do folderu
+    
+    ' Tworzenie tekstu do zapisu (pomijając nagłówki)
+    For i = 2 To rng.Rows.Count ' Zaczynamy od drugiego wiersza
+        textLine = ""
+        For Each cell In rng.Rows(i).Cells
+            textLine = textLine & """" & cell.Value & ""","
+        Next cell
+        ' Usuń ostatni przecinek i dodaj nawias klamrowy
+        If Len(textLine) > 0 Then
+            textLine = Mid(textLine, 1, Len(textLine) - 1) ' Usuń ostatni przecinek
+            output = output & "{" & textLine & "},"
+        End If
+    Next i
+    
+    ' Usuń ostatni przecinek
+    If Len(output) > 0 Then
+        output = Mid(output, 1, Len(output) - 1)
+    End If
+    
+    ' Zapisz do pliku
+    Dim fileNum As Integer
+    fileNum = FreeFile
+    Open filePath For Output As #fileNum
+    Print #fileNum, output
+    Close #fileNum
+    
+    MsgBox "Eksport zakończony! Plik zapisano jako " & filePath
+End Sub
