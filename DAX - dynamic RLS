@@ -1,0 +1,17 @@
+1. Funkcje do uzyskania informacji o zalogowanym uzytkowniku
+USERNAME() - zwraca nazwę uzytkownika w formie nazwadomeny/nazwa_uzytkownika w Power Bi Desktop, w usłudze PowerBI zwraca e-mail.
+USERPRINIPALNAME() - zwraca e-mail użytkownika - ZALECANE
+
+gdy publikujemy raport w naszej własnej aplikacji to lepsze będzie USERNAME()
+
+2. Hierarchia typu nadrzędny - podrzędny
+Najpierw należy stworzyć kolumnę obliczeniową Kolumna = PATH (ID dziecka, ID rodzica)
+Funckcja do szukania wartości w ściezce nadrzędny - podrzędny - PATHCONTAINS(sciezka do szukania, szukana wartosc)
+
+do RLS:
+VAR _klucz = CALCULATETABLE(VALUES(pracownicy[klucz pracownika],
+            FILTER(Pracownicy, Pracownicy [E-mail] = USERPRINCIPALNAME()
+            )
+RETURN
+PATHCONTAINS(Pracownicy[ścieżka], _klucz)
+
