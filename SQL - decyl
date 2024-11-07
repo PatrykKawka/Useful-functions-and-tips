@@ -1,0 +1,5 @@
+SELECT 
+    Kolumna,
+    NTILE(10) OVER (ORDER BY Kolumna) AS Decyl
+FROM 
+    TwojaTabela;
