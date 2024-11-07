@@ -1,0 +1,15 @@
+Korelacja_B_C = 
+VAR Średnia_B = AVERAGE('TwojaTabela'[B])
+VAR Średnia_C = AVERAGE('TwojaTabela'[C])
+VAR Licznik = 
+    SUMX(
+        'TwojaTabela',
+        ('TwojaTabela'[B] - Średnia_B) * ('TwojaTabela'[C] - Średnia_C)
+    )
+VAR Mianownik = 
+    SQRT(
+        SUMX('TwojaTabela', ('TwojaTabela'[B] - Średnia_B) ^ 2) * 
+        SUMX('TwojaTabela', ('TwojaTabela'[C] - Średnia_C) ^ 2)
+    )
+RETURN
+    DIVIDE(Licznik, Mianownik)
