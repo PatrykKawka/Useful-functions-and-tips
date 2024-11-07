@@ -1,0 +1,17 @@
+Decyl = 
+VAR PercentRank = 
+    PERCENTILE.INC('TwojaTabela'[Kolumna], DIVIDE(RANKX(ALL('TwojaTabela'), 'TwojaTabela'[Kolumna],, ASC), COUNTROWS('TwojaTabela')))
+RETURN
+    SWITCH(
+        TRUE(),
+        PercentRank <= 0.1, "Decyl 1",
+        PercentRank <= 0.2, "Decyl 2",
+        PercentRank <= 0.3, "Decyl 3",
+        PercentRank <= 0.4, "Decyl 4",
+        PercentRank <= 0.5, "Decyl 5",
+        PercentRank <= 0.6, "Decyl 6",
+        PercentRank <= 0.7, "Decyl 7",
+        PercentRank <= 0.8, "Decyl 8",
+        PercentRank <= 0.9, "Decyl 9",
+        "Decyl 10"
+    )
