@@ -1,0 +1,37 @@
+WITH RankedData AS (
+    SELECT 
+        Kolumna,
+        PERCENT_RANK() OVER (ORDER BY Kolumna) AS PercentRank
+    FROM 
+        TwojaTabela
+)
+SELECT 
+    Kolumna, 
+    PercentRank,
+    CASE 
+        WHEN PercentRank <= 0.1 THEN 'Pierwszy percentyl'
+        WHEN PercentRank <= 0.2 THEN 'Drugi percentyl'
+        WHEN PercentRank <= 0.3 THEN 'Trzeci percentyl'
+        -- dodaj więcej przedziałów w zależności od potrzeb
+        WHEN PercentRank <= 1 THEN 'Dziesiąty percentyl'
+    END AS Percentyl
+FROM 
+    RankedData
+WHERE 
+    Kolumna = @DanaWartosc;
+
+----------- LUB ----------------------------
+WITH PercentileData AS (
+    SELECT 
+        Kolumna,
+        NTILE(100) OVER (ORDER BY Kolumna) AS Percentyl
+    FROM 
+        TwojaTabela
+)
+SELECT 
+    Kolumna,
+    Percentyl
+FROM 
+    PercentileData
+WHERE 
+    Kolumna = @DanaWartosc;
