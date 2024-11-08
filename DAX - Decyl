@@ -1,13 +1,11 @@
 Decyl = 
-Decyl = 
-VAR PercentRank = 
-    PERCENTILE.INC(
-        'Pracownicy'[Imię i Nazwisko], 
-        DIVIDE(
-            RANKX(ALL('Pracownicy'), [Suma],, ASC), 
-            COUNTROWS('Pracownicy')
-        )
-    )
+VAR Ranking = RANKX(
+ALL(dim_Pracownicy), Miara według której liczymy, , ASC)
+
+VAR Wiersze = COUNTROWS(dim_Pracownicy)
+
+VAR PercentRank = DIVIDE(Ranking,Wiersze)
+
 RETURN
     SWITCH(
         TRUE(),
