@@ -1,0 +1,84 @@
+Sub GenerateCorrelationMatrix()
+    Dim ws As Worksheet
+    Dim rng As Range, dataRange As Range
+    Dim uniqueFunctions As Collection
+    Dim functionCell As Range
+    Dim filteredRange As Range
+    Dim outputWs As Worksheet
+    Dim rowOffset As Integer
+    Dim colOffset As Integer
+    Dim functionName As String
+    Dim correlationMatrix As Variant
+    Dim i As Long, j As Long
+
+    ' Ustaw arkusz z danymi
+    Set ws = ThisWorkbook.Sheets("Dane") ' Zmień nazwę na odpowiednią
+    
+    ' Zakres danych
+    Set rng = ws.UsedRange
+    Set dataRange = rng.Offset(1, 2).Resize(rng.Rows.Count - 1, rng.Columns.Count - 2) ' Zakres danych liczbowych (bez nagłówków)
+
+    ' Znajdź unikalne funkcje
+    Set uniqueFunctions = New Collection
+    On Error Resume Next
+    For Each functionCell In rng.Columns(2).Offset(1, 0).Resize(rng.Rows.Count - 1, 1) ' Kolumna funkcji
+        uniqueFunctions.Add functionCell.Value, CStr(functionCell.Value)
+    Next functionCell
+    On Error GoTo 0
+
+    ' Utwórz nowy arkusz dla wyników
+    On Error Resume Next
+    Set outputWs = ThisWorkbook.Sheets("MacierzKorelacji")
+    If outputWs Is Nothing Then
+        Set outputWs = ThisWorkbook.Sheets.Add
+        outputWs.Name = "MacierzKorelacji"
+    Else
+        outputWs.Cells.Clear
+    End If
+    On Error GoTo 0
+
+    ' Oblicz korelacje dla każdej funkcji
+    rowOffset = 1
+    For Each functionName In uniqueFunctions
+        ' Filtrowanie danych dla danej funkcji
+        ws.AutoFilterMode = False
+        rng.AutoFilter Field:=2, Criteria1:=functionName
+
+        On Error Resume Next
+        Set filteredRange = dataRange.SpecialCells(xlCellTypeVisible)
+        On Error GoTo 0
+
+        If Not filteredRange Is Nothing Then
+            ' Pobierz dane w formie tablicy
+            Dim processData As Variant
+            processData = filteredRange.Value
+
+            ' Oblicz macierz korelacji
+            correlationMatrix = WorksheetFunction.Correl(processData, processData)
+
+            ' Wstaw wyniki do arkusza wyników
+            outputWs.Cells(rowOffset, 1).Value = "Funkcja: " & functionName
+            rowOffset = rowOffset + 1
+            colOffset = 2
+
+            ' Nagłówki procesów
+            For i = 1 To UBound(processData, 2)
+                outputWs.Cells(rowOffset, colOffset + i - 1).Value = "Proces " & i
+                outputWs.Cells(rowOffset + i, colOffset - 1).Value = "Proces " & i
+            Next i
+
+            ' Wstaw dane korelacji
+            For i = 1 To UBound(correlationMatrix, 1)
+                For j = 1 To UBound(correlationMatrix, 2)
+                    outputWs.Cells(rowOffset + i, colOffset + j - 1).Value = correlationMatrix(i, j)
+                Next j
+            Next i
+
+            rowOffset = rowOffset + UBound(correlationMatrix, 1) + 2
+        End If
+    Next functionName
+
+    ' Wyłącz filtr
+    ws.AutoFilterMode = False
+    MsgBox "Macierze korelacji zostały wygenerowane w arkuszu: " & outputWs.Name
+End Sub
