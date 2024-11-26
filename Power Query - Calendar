@@ -1,0 +1,30 @@
+let
+
+    MinDate = List.Min(Table[ColumnName]),
+    MaxDate = List.Max(Table[ColumnName]),
+
+    DateList = List.Dates(MinDate, Duration.Days(MaxDate - MinDate) + 1, #duration(1, 0, 0, 0)),
+
+    DateTable = Table.FromList(DateList, Splitter.SplitByNothing(), {"Date"}),
+
+    DateWithColumns = Table.TransformColumns(
+        Table.AddColumn(DateTable, "Rok", each Date.Year([Date])),
+        {"Date", each Date.From(_, "en-US")}
+    ),
+    DateWithMonth = Table.AddColumn(DateWithColumns, "Miesiąc", each Date.Month([Date])),
+    DateWithMonthName = Table.AddColumn(DateWithMonth, "Nazwa miesiąca", each Date.ToText([Date], "MMMM", "pl-PL")),
+    DateWithDay = Table.AddColumn(DateWithMonthName, "Dzień", each Date.Day([Date])),
+    DateWithWeekDay = Table.AddColumn(DateWithDay, "Dzień tygodnia", each Date.ToText([Date], "dddd", "pl-PL")),
+    DateWithWeekDayNum = Table.AddColumn(DateWithWeekDay, "Numer dnia tygodnia", each Date.DayOfWeek([Date], Day.Monday) + 1),
+    DateWithQuarter = Table.AddColumn(DateWithWeekDayNum, "Kwartał", each "Q" & Number.ToText(Date.QuarterOfYear([Date]))),
+    DateWithYearQuarter = Table.AddColumn(DateWithQuarter, "Rok-kwartał", each Text.From(Date.Year([Date])) & "-Q" & Number.ToText(Date.QuarterOfYear([Date]))),
+    DateWithWeekNum = Table.AddColumn(DateWithYearQuarter, "Numer Tygodnia", each Date.WeekOfYear([Date], Week.Day.Monday)),
+    DateWithYearMonth = Table.AddColumn(DateWithWeekNum, "Rok-Miesiąc (YYYYMM)", each Date.Year([Date]) * 100 + Date.Month([Date])),
+    DateWithISOWeek = Table.AddColumn(DateWithYearMonth, "Numer tygodnia ISO", each Date.WeekOfYear([Date], Week.ISO)),
+    DateWithID = Table.AddColumn(DateWithISOWeek, "ID daty (YYYYMMDD)", each 
+        Text.PadStart(Text.From(Date.Year([Date])), 4, "0") &
+        Text.PadStart(Text.From(Date.Month([Date])), 2, "0") &
+        Text.PadStart(Text.From(Date.Day([Date])), 2, "0")
+    )
+in
+    DateWithID
