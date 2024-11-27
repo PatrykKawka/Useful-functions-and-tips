@@ -1,0 +1,28 @@
+Najbliższy dystans = 
+VAR _dlugosc = 
+    SELECTEDVALUE ( 'tbl (2)'[Y] )
+VAR _szerokosc = 
+    SELECTEDVALUE ( 'tbl (2)'[X] )
+VAR P = 
+    DIVIDE ( PI (), 180 )
+RETURN 
+    MINX (
+        tbl,
+        VAR _dlugosc2 = tbl[Y]
+        VAR _szerokosc2 = tbl[X]
+        
+        VAR deltaLat = (_szerokosc2 - _szerokosc) * P
+        VAR deltaLon = (_dlugosc2 - _dlugosc) * P  
+        
+        VAR A = 
+            SIN(deltaLat / 2) ^ 2 +
+            COS(_szerokosc * P) * COS(_szerokosc2 * P) * (SIN(deltaLon / 2) ^ 2)
+        
+        VAR C = 
+            2 * ATAN(SQRT(A) / SQRT(1 - A)) 
+        VAR R = 6371  
+        
+        VAR _Result = R * C
+        RETURN 
+            _Result
+    )
