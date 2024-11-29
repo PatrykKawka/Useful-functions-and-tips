@@ -1,0 +1,6 @@
+VAR MiaraMinuty = .........
+VAR Godziny = INT(DIVIDE(MiaraMinuty,60))
+VAR Minuty = MOD(MiaraMinuty,60)
+
+RETURN
+FORMAT(Godziny, "0") & "h " & FORMAT(Minuty, "0") & "min"
